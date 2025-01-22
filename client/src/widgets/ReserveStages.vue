@@ -21,7 +21,7 @@ const {stages, activeStage} = storeToRefs(appStore);
             <span class="leading-none">{{ idx + 1 }}</span>
         <p 
             v-if="idx === activeStage"
-            class="absolute left-0 top-8 font-medium text-xs text-center" 
+            class="absolute left-1/2 top-8 font-medium text-xs text-center" 
             :style="idx === 0 ? '' : 'transform: translateX(-50%);'"
         >
             {{ stage }}

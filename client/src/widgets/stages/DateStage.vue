@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { DatePicker, InputNumber } from 'primevue';
 import { formatDate } from '../../core/helpers';
-import StageTitle from '../StageTitle.vue';
+import StageTitle from './../../ui/StageTitle.vue';
 
 const date = ref<Date | Date[] | (Date | null)[] | null | undefined>(new Date());
 const peopleCount = ref<number>(1);
@@ -75,6 +75,7 @@ const peopleCount = ref<number>(1);
 
 .p-inputtext {
     background: #F5F5F512 !important;
+    border: 1px solid var(--silver-color) !important;
 }
 
 .p-inputtext:enabled:focus {
