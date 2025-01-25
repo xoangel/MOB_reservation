@@ -418,7 +418,7 @@ export interface ApiTripTrip extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Decimal;
+    description: Schema.Attribute.Text;
     duration: Schema.Attribute.Decimal;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::trip.trip'> &
@@ -466,6 +466,9 @@ export interface ApiVehicleVehicle extends Struct.CollectionTypeSchema {
     >;
     price: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
+    season_allowed: Schema.Attribute.Enumeration<
+      ['\u041B\u0435\u0442\u043E', '\u0417\u0438\u043C\u0430']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

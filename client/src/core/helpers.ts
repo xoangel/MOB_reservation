@@ -10,3 +10,5 @@ export const formatDate = (dateInput: Date | string): string => {
     
     return `${day}.${month}.${year}`;
 }
+
+export const getAssetPath = (path: string) => import.meta.env.VITE_SERVER + (path.startsWith('/') ? path : ('/' + path));

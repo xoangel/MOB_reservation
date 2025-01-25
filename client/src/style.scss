@@ -43,9 +43,13 @@ body{
 }
 
 //transitions 
+
+
+// fade
+
 .fade-enter-active,
 .fade-leave-active {
-  transition: all .3s ease;
+  transition: opacity 0.35s ease;
 }
 
 .fade-enter-from,
@@ -53,43 +57,153 @@ body{
   opacity: 0;
 }
 
+// fast-fade
 
-.stagger-enter-active, .stagger-leave-active {
-  transition: all 0.3s ease;
+.fast-fade-enter-active,
+.fast-fade-leave-active {
+  transition: opacity 0.15s ease;
 }
 
-.stagger-enter-from, .stagger-leave-to {
+.fast-fade-enter-from,
+.fast-fade-leave-to {
   opacity: 0;
-  transform: translateY(20px);
 }
 
-.stagger-leave-from, .stagger-enter-to {
+
+//swipe-right
+.swipe-right-enter-active,
+.swipe-right-leave-active {
+  transition: opacity 0.3s var(--fast-out), transform 0.3s var(--fast-out);
+}
+.swipe-right-enter-from {
+  opacity: 0;
+  transform: translateX(-20%);
+}
+.swipe-right-enter-to,
+.swipe-right-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+.swipe-right-leave-to {
+  opacity: 0;
+  transform: translateX(20%);
+}
+
+
+//swipe-left
+.swipe-left-enter-active,
+.swipe-left-leave-active {
+  transition: opacity 0.3s var(--fast-out), transform 0.3s var(--fast-out);
+}
+.swipe-left-enter-from {
+  opacity: 0;
+  transform: translateX(20%);
+}
+.swipe-left-enter-to,
+.swipe-left-leave-from {
+  opacity: 1;
+  transform: translateX(0);
+}
+.swipe-left-leave-to {
+  opacity: 0;
+  transform: translateX(-20%);
+}
+
+//fade-down
+.fade-down-enter-active,
+.fade-down-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-down-enter-from,
+.fade-down-leave-to {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.fade-down-enter-to,
+.fade-down-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
 
-.flip-enter-active, .flip-leave-active {
-  transition: transform 0.6s ease, opacity 0.6s ease;
+.swipe-up-enter-active {
+  animation: swipeUp .5s var(--fast-out) forwards;
+}
+.swipe-up-leave-active {
+  animation: swipeDown .5s var(--fast-out) forwards;
 }
 
-.flip-enter, .flip-leave-to {
-  transform: rotateY(90deg);
+/* Ключевые кадры для swipe-up */
+@keyframes swipeUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Ключевые кадры для swipe-down */
+@keyframes swipeDown {
+  0% {
+    //transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+
+//fade-filter
+.fade-filter-enter-active, .fade-filter-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.fade-filter-enter, .fade-filter-leave-to {
   opacity: 0;
+  transform: translateY(-20px);
 }
 
-.flip-enter-to, .flip-leave {
-  transform: rotateY(0);
+
+//staggerX
+.staggerX-enter-active,
+.staggerX-leave-active {
+  transition: all 0.3s ease;
+}
+
+.staggerX-enter-from,
+.staggerX-leave-to {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.staggerX-leave-from,
+.staggerX-enter-to {
   opacity: 1;
+  transform: translateX(0);
 }
 
-.fade-scale-enter-active, .fade-scale-leave-active {
-  transition: opacity 0.5s, transform 0.5s;
+
+//staggerY
+.staggerY-enter-active,
+.staggerY-leave-active {
+  transition: all 0.3s ease;
 }
-.fade-scale-enter {
+
+.staggerY-enter-from,
+.staggerY-leave-to {
   opacity: 0;
-  transform: scale(0.9);
+  transform: translateY(20px);
 }
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(1.1);
+
+.staggerY-leave-from,
+.staggerY-enter-to {
+  opacity: 1;
+  transform: translateY(0);
 }
+
+
