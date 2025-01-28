@@ -6,6 +6,7 @@ export interface Trip {
     id: number; // Идентификатор записи
     publishedAt: string; // Дата публикации (ISO строка)
     title: string; // Заголовок документа
+    map: string,
     updatedAt: string; // Дата последнего обновления (ISO строка)
     photo: {
       url: string,

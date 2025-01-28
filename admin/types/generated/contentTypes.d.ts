@@ -419,11 +419,12 @@ export interface ApiTripTrip extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
+    distance: Schema.Attribute.Decimal;
     duration: Schema.Attribute.Decimal;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::trip.trip'> &
       Schema.Attribute.Private;
-    map: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    map: Schema.Attribute.String;
     photo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true

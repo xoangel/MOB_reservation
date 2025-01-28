@@ -8,6 +8,7 @@
   --silver-color: #CBD5E1;
   --blue-color: #0EA5E9;
   --cyan-color: #BAE6FD;
+  --p-divider-border-color: #F5F5F517 !important;
 }
 
 *{
@@ -34,12 +35,16 @@ body{
 }
 
 #app{
-  height: 100vh;
+  min-height: 100vh;
   max-width: 720px;
   margin: auto;
   background: center / cover no-repeat url(/bg.png);
   padding: 0 10px;
   padding-top: 70px;
+}
+
+.bg-transparent-white{
+  background-color: #F5F5F517;
 }
 
 //transitions 
@@ -191,7 +196,7 @@ body{
 //staggerY
 .staggerY-enter-active,
 .staggerY-leave-active {
-  transition: all 0.3s ease;
+  transition: all .3s ease;
 }
 
 .staggerY-enter-from,
