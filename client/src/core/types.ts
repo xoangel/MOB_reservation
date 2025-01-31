@@ -12,3 +12,20 @@ export interface Trip {
       url: string,
     }
   }
+
+  export interface Vehicle {
+    name: string;
+    createdAt: string;
+    description: string;
+    documentId: string;
+    id: number;
+    people_allowed: number;
+    price: number;
+    publishedAt: string;
+    season_allowed: string | null;
+    updatedAt: string;
+    photo: {
+      url: string,
+    }
+  };
+  

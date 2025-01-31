@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Racing+Sans+One&display=swap');
 
 :root{
   --white-color: #F5F5F5;
@@ -47,6 +48,30 @@ body{
   background-color: #F5F5F517;
 }
 
+
+.p-progressspinner-circle{
+  color: var(--white-color);
+}
+
+.p-button-info {
+  background: var(--white-color) !important;
+  border: none !important;
+  color: var(--p-button-info-color);
+}
+
+.font-racing{
+  font-family: "Racing Sans One", serif;
+}
+
+.translate-center{
+  transform: translate(-50%, -50%);
+}
+
+
+.blurred{
+  background-color: #ffffff17;
+  backdrop-filter: blur(44px);
+}
 //transitions 
 
 
@@ -211,4 +236,23 @@ body{
   transform: translateY(0);
 }
 
+//fade-list
+/* 1. declare transition */
+.fade-list-move,
+.fade-list-enter-active,
+.fade-list-leave-active {
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
 
+/* 2. declare enter from and leave to state */
+.fade-list-enter-from,
+.fade-list-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+/* 3. ensure leaving items are taken out of layout flow so that moving
+      animations can be calculated correctly. */
+.fade-list-leave-active {
+  position: absolute;
+}

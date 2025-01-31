@@ -459,7 +459,7 @@ export interface ApiVehicleVehicle extends Struct.CollectionTypeSchema {
       'api::vehicle.vehicle'
     > &
       Schema.Attribute.Private;
-    Name: Schema.Attribute.String;
+    name: Schema.Attribute.String;
     people_allowed: Schema.Attribute.Integer;
     photo: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',

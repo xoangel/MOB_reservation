@@ -1,32 +1,37 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { DatePicker, InputNumber } from 'primevue';
-import { formatDate } from '../../core/helpers';
-import StageTitle from './../../ui/StageTitle.vue';
+import { DatePicker, InputNumber, Button } from 'primevue';
+import { formatDate } from '@/core/helpers';
+import { useAppStore } from '@/stores/app';
+import { storeToRefs } from 'pinia';
+import StageTitle from '@/ui/StageTitle.vue';
 
-const date = ref<Date | Date[] | (Date | null)[] | null | undefined>(new Date());
-const peopleCount = ref<number>(1);
+const appStore = useAppStore();
+const { activeStage, stagesDataStored } = storeToRefs(appStore);
+
 </script>
 
 <template>
     <div class="flex flex-col items-center justify-center w-full pt-2 mb-10 gap-5">
         <StageTitle title="Выберите дату" :index="1" />
         <div class="flex flex-col gap-2.5">
-            <DatePicker v-model="date" inline showWeek :showOtherMonths="false" class="w-full sm:w-[30rem]"
+            <DatePicker v-model="stagesDataStored[activeStage].date" inline showWeek :showOtherMonths="false" class="w-full sm:w-[30rem]"
                 :min-date="new Date()" />
             <div class="flex flex-col items-end justify-center gap-1 w-full h-20 rounded-xl">
                 <div class="flex items-center justify-between py-1 px-2 h-full w-full">
                     <p class="text-sm text-zinc-200 font-light">Выбраная дата: </p>
-                    <p class="text-base">{{ formatDate(date as Date) }}</p>
+                    <p class="text-base">{{ formatDate(stagesDataStored[activeStage].date as Date) }}</p>
                 </div>
-                <span class="h-1 w-full rounded-full bg-zinc-100"></span>
+                <!-- <span class="h-1 w-full rounded-full bg-zinc-100"></span> -->
                 <div class="flex items-center justify-between gap-2.5 py-1 px-2 h-full w-full">
-                    <p class="text-sm text-zinc-200 font-light">Количество человек: </p>
-                    <InputNumber v-model="peopleCount" showButtons size="small" :min="1" :max="50" />
+                    <p class="text-sm text-zinc-200 font-light" @click="appStore.nextStage">Количество человек: </p>
+                    <InputNumber v-model="stagesDataStored[activeStage].persons" showButtons size="small" :min="1" :max="50" />
                 </div>
             </div>
+            <Button label="Продолжить" severity="info" icon="pi pi-check" raised
+            fluid class="mt-2.5" @click="appStore.nextStage"></Button>
         </div>
-
+    
 
     </div>
 </template>
