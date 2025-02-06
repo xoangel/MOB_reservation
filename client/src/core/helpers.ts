@@ -11,4 +11,9 @@ export const formatDate = (dateInput: Date | string): string => {
     return `${day}.${month}.${year}`;
 }
 
-export const getAssetPath = (path: string) => import.meta.env.VITE_SERVER + (path.startsWith('/') ? path : ('/' + path));
+export const getAssetPath = (path: string) => import.meta.env.VITE_SERVER + (path?.startsWith('/') ? path : ('/' + path));
+
+export const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };

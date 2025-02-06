@@ -381,12 +381,12 @@ export interface ApiReservationReservation extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    contact: Schema.Attribute.String;
     count: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     date: Schema.Attribute.Date;
+    email: Schema.Attribute.Email;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -394,6 +394,7 @@ export interface ApiReservationReservation extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     person: Schema.Attribute.String;
+    phone: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     trip: Schema.Attribute.Relation<'oneToOne', 'api::trip.trip'>;
     updatedAt: Schema.Attribute.DateTime;

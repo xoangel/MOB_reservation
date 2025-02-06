@@ -12,7 +12,7 @@ defineProps({
         class="w-7 h-7 flex items-center justify-center rounded-full bg-[#0EA5E9] text-zinc-100"
         >{{ index }}</span
       >
-      <h1 class="text-xl text-zinc-100">{{ title }}</h1>
+      <h1 class="text-xl text-zinc-100 font-raleway font-semibold">{{ title }}</h1>
     </div>
   </div>
 </template>
