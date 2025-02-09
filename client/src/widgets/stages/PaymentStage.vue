@@ -19,13 +19,13 @@ const { stagesDataStored } = storeToRefs(appStore);
 
 //service data
 const validEmail = ref<boolean>(true);
-const validateForm = computed(()=>name.value && surname.value && phone.value && phone.value.length === 11);
+const validateForm = computed(() => name.value && surname.value && phone.value && phone.value.length === 11);
 
-const confirm = async() => {
+const confirm = async () => {
     validEmail.value = validateEmail(email.value);
-    if(!validEmail.value) return;
-    
-    try{
+    if (!validEmail.value) return;
+
+    try {
         return await ApiService.post('/api/reservations', {
             data: {
                 person: name.value + ' ' + surname.value,
@@ -38,7 +38,7 @@ const confirm = async() => {
             }
 
         })
-    } catch(e){
+    } catch (e) {
         console.error(e)
     }
 }
@@ -59,34 +59,44 @@ const confirm = async() => {
             </div>
             <div class="flex flex-col gap-2 w-full">
                 <label for="email">Email*</label>
-                <InputText id="email" v-model="email" placeholder="me@mail.ru" aria-describedby="username-help" :invalid="!validEmail" />
-                <Message v-if="!validEmail" size="small" severity="error" variant="simple">Такого адреса не существует</Message>
-                <Message size="small" severity="secondary" variant="simple">Вводите существующий почтовый адрес, на него придет подтверждение брони</Message>
+                <InputText id="email" v-model="email" placeholder="me@mail.ru" aria-describedby="username-help"
+                    :invalid="!validEmail" />
+                <Message v-if="!validEmail" size="small" severity="error" variant="simple">Такого адреса не существует
+                </Message>
+                <Message size="small" severity="secondary" variant="simple">Вводите существующий почтовый адрес, на него
+                    придет подтверждение брони</Message>
             </div>
             <div class="flex flex-col gap-2 w-full">
                 <label for="phone">Номер телефона*</label>
-                <InputMask id="phone" v-model="phone" placeholder="+7 (999) 999-9999" mask="+7 (999) 999-9999" aria-describedby="username-help" />
+                <InputMask id="phone" v-model="phone" placeholder="+7 (999) 999-9999" mask="+7 (999) 999-9999"
+                    aria-describedby="username-help" />
             </div>
             <div class="flex flex-col gap-4 border border-dashed border-neutral-100 p-2.5 rounded-xl blurred mt-6">
                 <p class="text-white text-sm tetxt-medium">Внимательно проверьте всю информацию перед подтверждением</p>
                 <div class="flex items-center justify-between gap-7 w-full">
-                    <div class="flex gap-1 items-center">
+                    <div class="flex gap-2 items-center">
                         <i class="pi pi-info-circle text-xl text-gray-400"></i>
                         <p class="text-base text-white font-semibold">Экскурсия</p>
                     </div>
-                    <p class="text-base text-white text-right font-medium">Экскурсия "{{ stagesDataStored[1].tripName }}" <br> {{ stagesDataStored[2].transportName }} <br> {{ stagesDataStored[0].persons }} человек(а)</p>
+                    <div>
+                        
+                    </div>
                 </div>
                 <span class="w-full border-t border-dashed border-neutral-100"></span>
                 <div class="flex items-center justify-between gap-7 w-full">
-                    <div class="flex gap-1 items-center">
+                    <div class="flex gap-2 items-center">
                         <i class="pi pi-credit-card text-xl text-gray-400"></i>
                         <p class="text-base text-white font-semibold">Сумма</p>
                     </div>
-                    <p>{{ stagesDataStored[2].price }} * {{ stagesDataStored[0].persons }} = <span>{{  stagesDataStored[2].price*stagesDataStored[0].persons }} руб.</span> </p>
+                    <p>{{ stagesDataStored[2].price }} * {{ stagesDataStored[0].persons }} = <span>{{
+                        stagesDataStored[2].price *stagesDataStored[0].persons }} руб.</span> </p>
                 </div>
             </div>
-            <Button label="Далее" severity="info" icon="pi pi-check" raised
-                fluid class="mt-2.5" @click="confirm"></Button>
+            <button class="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-100 g-button px-4 py-2 mt-4"
+                @click="confirm">
+                <p>Продолжить</p>
+                <i class="pi pi-angle-right"></i>
+            </button>
         </div>
     </div>
 </template>

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { getAssetPath } from '@/core/helpers';
 import { Trip } from "@/core/types";
 import { Button } from 'primevue';
-import { Divider } from 'primevue';
+import { Divider, Skeleton } from 'primevue';
 import StageTitle from '@/ui/StageTitle.vue';
-import ApiService from "@/core/ApiService.ts";
+import ApiService from "@/core/ApiService";
 import type { AxiosResponse } from 'axios';
 import { useAppStore } from '@/stores/app';
 import { storeToRefs } from 'pinia';
@@ -22,7 +22,7 @@ const { stagesDataStored, loading } = storeToRefs(appStore);
 const getTrips = async (): Promise<void> => {
     try {
         loading.value = true;
-        const response: AxiosResponse<Trip> = await ApiService.get('/api/trips?populate=*');
+        const response: AxiosResponse<{data: Trip[]}> = await ApiService.get('/api/trips?populate=*');
         trips.value = tripsDisplay.value = response?.data?.data;
     } catch (e) {
         console.error(e);
@@ -54,7 +54,11 @@ getTrips();
 </script>
 
 <template>
-    <div class="flex flex-col items-center justify-center w-full pt-2 mb-10 gap-5">
+    <div v-if="loading" class="w-full flex flex-col gap-5 pt-5">
+        <Skeleton width="100%" height="208px"></Skeleton>
+        <Skeleton width="100%" height="208px"></Skeleton>
+    </div>
+    <div v-else class="flex flex-col items-center justify-center w-full pt-2 mb-10 gap-5">
         <StageTitle title="Выберите направление" :index="2" />
         <div class="flex flex-wrap w-full gap-2">
             <TransitionGroup name="staggerY">
@@ -62,7 +66,7 @@ getTrips();
                     class="trip relative w-full h-52 rounded-xl border border-solid border-neutral-100 overflow-hidden transition-all duration-300 ease-out"
                     :class="{ '!h-12': isDetailedView && trip.documentId !== seletedTrip.documentId }"
                     @click="select(trip.documentId)">
-                    <img class="absolute top-0 left-0 w-full" :src="getAssetPath(trip.photo[0].url)" alt="trip">
+                    <img class="absolute left-0 w-full" :src="getAssetPath(trip.photo[0].url)" alt="trip" style="top: -40%">
                     <div class="gradient-underlay absolute bottom-0 left-0 w-full pl-3 pb-3">
                         <h2 class="text-xl text-zinc-100 font-medium leading-none">{{ trip.title }}</h2>
                     </div>
@@ -106,7 +110,7 @@ getTrips();
                 <Button label="Назад" severity="info" icon="pi pi-arrow-left" raised class="absolute left-3 top-14"
                     @click="showMap = false"></Button>
                 <iframe class="rounded-xl border border-solid border-neutral-100"
-                    src="https://yandex.ru/map-widget/v1/?um=constructor%3A355e2c787c3cbf345abb1f58a9b66a22a921d4379b1d230c3aac517b43570d63&amp;source=constructor"
+                    :src="seletedTrip.map"
                     width="100%" height="556" frameborder="0"></iframe>
             </div>
         </Transition>

@@ -6,6 +6,7 @@ import DateStage from '@/widgets/stages/DateStage.vue';
 import DirectionStage from '@/widgets/stages/DirectionStage.vue';
 import VehicleStage from '@/widgets/stages/VehicleStage.vue';
 import PaymentStage from "@/widgets/stages/PaymentStage.vue";
+import FinalStage from '@/widgets/stages/FinalStage.vue';
 import { storeToRefs } from 'pinia';
 
 const appStore = useAppStore();
@@ -14,7 +15,8 @@ const components = shallowRef([
     DateStage,
     DirectionStage,
     VehicleStage,
-    PaymentStage
+    PaymentStage,
+    FinalStage
 ]);
 </script>
 

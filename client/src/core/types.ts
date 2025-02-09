@@ -24,8 +24,8 @@ export interface Trip {
     publishedAt: string;
     season_allowed: string | null;
     updatedAt: string;
-    photo: {
+    photo: Array<{
       url: string,
-    }
+    }>
   };
   

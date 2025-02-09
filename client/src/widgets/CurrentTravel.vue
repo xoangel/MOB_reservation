@@ -38,19 +38,19 @@ onUnmounted(() => {
         <div class="flex gap-2 w-full">
           <div class="h-full w-full text-neutral-100 text-sm">
             <Transition name="staggerY">
-              <p class="inline mr-1" v-if="activeStage > 0">
-                Экскурсия <span class="underline font-semibold">{{ formatDate(stagesDataStored[0].date) }}</span> 
+              <p class="inline mr-1" v-if="activeStage > 0" @click="appStore.watchStage(0)">
+                Экскурсия <span class="underline font-semibold">{{ formatDate(stagesDataStored[0].date as Date) }}</span> 
                 из <span class="underline font-semibold">{{ stagesDataStored[0].persons }} человек(-а)</span>
               </p>
             </Transition>
             <Transition name="staggerY">
-              <p class="inline mr-1" v-if="activeStage > 1">
+              <p class="inline mr-1" v-if="activeStage > 1" @click="appStore.watchStage(1)">
                 на <span class="underline font-semibold">{{ stagesDataStored[1].tripName }}.</span>
               </p>
             </Transition>
             <Transition name="staggerY">
               <p class="inline mr-1" v-if="activeStage > 2">
-                Транспорт - <span class="underline font-semibold">{{ stagesDataStored[2].transportName }}.</span>
+                Транспорт - <span class="underline font-semibold" @click="appStore.watchStage(2)">{{ stagesDataStored[2].transportName }}.</span>
               </p>
             </Transition>
           </div>
@@ -58,7 +58,7 @@ onUnmounted(() => {
         </div>
       </div>
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[-1]">
-        <Vue3Lottie :animation-data="gradient" :loop="true" :width="containerWidth" :height="120" :speed="2" />
+        <Vue3Lottie :animation-data="gradient" :loop="true" :width="containerWidth" :speed="2" />
       </div>
     </div>
   </div>

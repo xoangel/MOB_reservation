@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive, ref, watch } from "vue";
+import { computed, ref, toRaw, toRef } from "vue";
 
 export const useAppStore = defineStore("appStore", () => {
   const loading = ref<boolean>(false);
@@ -13,23 +13,27 @@ export const useAppStore = defineStore("appStore", () => {
     "Готово!",
   ]);
 
-  let stagesDataStored = reactive<any[]>([
+
+  const stagesDataStored = ref<any[]>([
     {
-      date: new Date(),
-      persons: 1,
+      date: ref<Date>(new Date()),
+      persons: ref(1),
     },
     {
-      tripId: null,
-      tripName: ""
+      tripId: ref(null),
+      tripName: ref(""),
     },
     {
-      transportId: null,
-      transportName: ""
+      transportId: ref(null),
+      transportName: ref(""),
+      price: ref(null)
     },
   ]);
 
+  const isWinter = computed<boolean>(()=>[1, 2, 3, 4, 5, 9, 10, 11, 12].includes(new Date(stagesDataStored.value[0].date).getMonth()))
+
   const nextStage = () => {
-    if(activeStage.value === visibleStage.value){
+    if (activeStage.value === visibleStage.value) {
       activeStage.value++;
       visibleStage.value = activeStage.value;
     } else {
@@ -37,13 +41,27 @@ export const useAppStore = defineStore("appStore", () => {
       activeStage.value = visibleStage.value;
     }
 
-    localStorage.setItem("stagesData", stagesDataStored);
-    localStorage.setItem("stage", activeStage.value.toString());
+    cacheData();
   };
 
   const watchStage = (stage: number) => {
     visibleStage.value = stage;
-  }
+  };
+
+  const cacheData = () => {
+    const raw = stagesDataStored.value.map((el: object) => {
+      let data: any = {};
+      for (const key in el) {
+        data[key] = toRaw(el[key]);
+      }
+      return data;
+    });
+    localStorage.setItem(
+      "stagesData",
+      JSON.stringify(raw)
+    );
+    localStorage.setItem("stage", activeStage.value.toString());
+  };
 
   const loadActiveStage = () => {
     const stageStr = localStorage.getItem("stage");
@@ -51,40 +69,38 @@ export const useAppStore = defineStore("appStore", () => {
 
     if (stageStr && stagesDataStr) {
       const stage = parseInt(stageStr);
-      const stagesData: Array<any> = JSON.parse(stagesDataStr);
+      const stagesData: Array<object> = JSON.parse(stagesDataStr);
       activeStage.value = stage;
       visibleStage.value = activeStage.value;
-      stagesDataStored.map((item, idx)=>item = stagesData[idx])
+      stagesDataStored.value = stagesData.map((el: object) => {
+        let data: any = {};
+        for (const key in el) {
+          data[key] = toRef(el[key]);
+        }
+        return data;
+      });
     } else reloadAppState();
   };
 
   const reloadAppState = () => {
     activeStage.value = visibleStage.value = 0;
-    stagesDataStored = reactive([
+    stagesDataStored.value = [
       {
-        date: new Date(),
-        persons: 1,
+        date: ref(new Date()),
+        persons: ref(1),
       },
       {
-        tripId: null,
-        tripName: ""
+        tripId: ref(null),
+        tripName: ref(""),
       },
       {
-        transportId: null,
-        transportName: ""
+        transportId: ref(null),
+        transportName: ref(""),
       },
-    ]);
+    ];
     localStorage.removeItem("stage");
     localStorage.removeItem("stagesData");
   };
-
-  watch(
-    stagesDataStored,
-    (newValue) => {
-      localStorage.setItem("stagesData", JSON.stringify(newValue));
-    },
-    { deep: true }
-  );
 
   return {
     loading,
@@ -92,6 +108,7 @@ export const useAppStore = defineStore("appStore", () => {
     visibleStage,
     stages,
     stagesDataStored,
+    isWinter,
     nextStage,
     watchStage,
     loadActiveStage,

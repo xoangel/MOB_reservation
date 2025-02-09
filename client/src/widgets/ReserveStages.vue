@@ -2,22 +2,27 @@
 import { storeToRefs } from 'pinia';
 import { useAppStore } from '@/stores/app';
 import anime from "animejs";
-import { nextTick, onMounted, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
+//uses
 const appStore = useAppStore();
+
+//data
 const { stages, activeStage } = storeToRefs(appStore);
 
+//service data
+const completed = ref<boolean>(false)
+let paths: any[];
 let gradientBox: Element;
-
 let currentColors = {
     color1: "#0EA5E9",
     color2: "#BAE6FD",
 };
 
 const updateGradient = () => {
-    if (gradientBox && gradientBox.style) {
-  gradientBox.style.background = `linear-gradient(90deg, ${currentColors.color1}, ${currentColors.color2})`;
-}
+    if (gradientBox && (gradientBox as any).style) {
+        (gradientBox as any).style.background = `linear-gradient(90deg, ${currentColors.color1}, ${currentColors.color2})`;
+    }
 
 }
 
@@ -50,32 +55,69 @@ onMounted(() => {
     const lines = Array.from(document.querySelectorAll(".line__passed"));
     lines.map(el => (el as any).style.background = "#0EA5E9")
 })
+
+
+const mergeArrays = (arr1: any[], arr2: any[]) =>
+    Array.from({ length: Math.max(arr1.length, arr2.length) }, (_, i) => [arr1[i], arr2[i]]).flat();
+
+onMounted(async () => {
+    await nextTick();
+    paths = mergeArrays(Array.from(document.querySelectorAll('.stage')), Array.from(document.querySelectorAll('.line')))
+    paths.pop();
+    const animation = anime({
+        targets: paths,
+        translateX: function (_: Element, i: number) {
+            return i * (-50);
+        },
+        scale: 0,
+        direction: 'normal',
+        loop: false,
+        autoplay: false,
+        delay: function (_, i) {
+            return i * 50;
+        },
+        endDelay: function (_, i, l) {
+            return (l - i) * 100;
+        },
+        complete: () => {
+            completed.value = true;
+        }
+    });
+
+    watch(activeStage, (value) => {
+        if (value === 4) animation.play();
+    })
+})
 </script>
 
 <template>
-    <div class="flex items-center justify-center gap-1 w-full m-auto mt-6 mb-10">
-        <div v-for="(stage, idx) in stages" :key="idx" class="flex items-center gap-1"
-            :class="{ 'w-full': idx < stages.length - 1 }">
-            <div class="stage relative min-w-7 h-7 flex items-center justify-center rounded-full"
-                :class="{ 'stage__passed': idx <= activeStage }" @click="tryWatchStage(idx)">
-                <span class="leading-none">{{ idx + 1 }}</span>
-                <p v-if="idx === activeStage" class="absolute left-1/2 top-8 font-medium text-xs text-center"
-                    :style="'transform: translateX(-50%);'">
-                    {{ stage }}
-                </p>
+    <div class="w-full h-24">
+        <Transition name="fade" mode="out-in">
+            <div v-if="!completed" class="flex items-center justify-center gap-1 w-full m-auto mt-6 mb-10">
+                <div v-for="(stage, idx) in stages" :key="idx" class="flex items-center gap-1"
+                    :class="{ 'w-full': idx < stages.length - 1 }">
+                    <div class="stage relative min-w-7 h-7 flex items-center justify-center rounded-full"
+                        :class="{ 'stage__passed': idx <= activeStage }" @click="tryWatchStage(idx)">
+                        <span class="leading-none">{{ idx + 1 }}</span>
+                        <p v-if="idx === activeStage" class="absolute left-1/2 top-8 font-medium text-xs text-center"
+                            :style="'transform: translateX(-50%);'">
+                            {{ stage }}
+                        </p>
+                    </div>
+                    <div v-if="idx < stages.length - 1" class="relative w-full h-1">
+                        <span class="line w-full h-1 rounded-full" :class="{
+                            'line__active': idx === activeStage,
+                            'line__passed': idx < activeStage,
+                        }">
+                        </span>
+                        <span class="light" />
+                    </div>
+                </div>
             </div>
-            <div v-if="idx < stages.length - 1" class="relative w-full h-1">
-                <span class="line w-full h-1 rounded-full" :class="{
-                    'line__active': idx === activeStage,
-                    'line__passed': idx < activeStage,
-                }">
-                </span>
-                <span class="light" />
-            </div>
-
-
-        </div>
+            <h3 v-else>Готово</h3>
+        </Transition>
     </div>
+
 </template>
 
 <style lang="scss" scoped>

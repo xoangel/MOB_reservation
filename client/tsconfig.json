@@ -9,6 +9,9 @@
     },
   ],
   "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "node",
     "resolveJsonModule": true, 
     "esModuleInterop": true, 
     "baseUrl": ".",  
