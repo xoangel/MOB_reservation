@@ -5,6 +5,8 @@ import { useAppStore } from '@/stores/app';
 import { formatDate } from '@/core/helpers';
 import { Vue3Lottie } from 'vue3-lottie';
 import gradient from "@/assets/lottie/gradient.json";
+import ContactsDrawer from "@/widgets/ContactsDrawer.vue";
+import TransferButton from '@/ui/TransferButton.vue';
 
 // elements
 const currentTravel = ref<HTMLElement | null>(null);
@@ -39,7 +41,8 @@ onUnmounted(() => {
           <div class="h-full w-full text-neutral-100 text-sm">
             <Transition name="staggerY">
               <p class="inline mr-1" v-if="activeStage > 0" @click="appStore.watchStage(0)">
-                Экскурсия <span class="underline font-semibold">{{ formatDate(stagesDataStored[0].date as Date) }}</span> 
+                Экскурсия <span class="underline font-semibold">{{ formatDate(stagesDataStored[0].date as Date)
+                  }}</span>
                 из <span class="underline font-semibold">{{ stagesDataStored[0].persons }} человек(-а)</span>
               </p>
             </Transition>
@@ -50,11 +53,16 @@ onUnmounted(() => {
             </Transition>
             <Transition name="staggerY">
               <p class="inline mr-1" v-if="activeStage > 2">
-                Транспорт - <span class="underline font-semibold" @click="appStore.watchStage(2)">{{ stagesDataStored[2].transportName }}.</span>
+                Транспорт - <span class="underline font-semibold" @click="appStore.watchStage(2)">{{
+                  stagesDataStored[2].transportName }}.</span>
               </p>
             </Transition>
           </div>
           <img src="/mountain.svg" class="h-16" alt="" />
+        </div>
+        <div class="w-full flex items-center gap-2 my-2">
+          <ContactsDrawer />
+          <TransferButton />
         </div>
       </div>
       <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-[-1]">

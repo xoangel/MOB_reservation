@@ -16,4 +16,15 @@ export const getAssetPath = (path: string) => import.meta.env.VITE_SERVER + (pat
 export const validateEmail = (email: string): boolean => {
     const emailRegex = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email);
-  };
+};
+
+export const generateKey = (length = 8) => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let key = '';
+    for (let i = 0; i < length; i++) {
+      key += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return key;
+}
+
+export const calcFullCost = (sum: number) => (Math.ceil((sum / 2 + (sum / 2 * 1.1)) / 50) * 50)

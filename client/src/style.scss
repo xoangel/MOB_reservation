@@ -3,6 +3,8 @@
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Racing+Sans+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
 
 :root {
   --white-color: #F5F5F5;
@@ -10,6 +12,8 @@
   --blue-color: #0EA5E9;
   --cyan-color: #BAE6FD;
   --p-divider-border-color: #F5F5F517 !important;
+  --p-galleria-thumbnails-content-background: #0ea4e93a !important;
+  --p-galleria-border-width: 0px !important;
 }
 
 * {
@@ -28,11 +32,15 @@ a,
 button,
 span,
 div {
-  font-family: "Inter", serif;
+  font-family: "Manrope", serif;
 }
 
 body {
+  position: relative;
   background-color: #232258;
+  @media screen and (min-width: 720px) {
+    background: center / cover no-repeat url(/bg_large.png);
+  }
 }
 
 #app {
@@ -43,6 +51,10 @@ body {
   margin: auto;
   background: center / cover no-repeat url(/bg.png);
   padding: 70px 10px 240px 10px;
+
+  @media screen and (min-width: 720px) {
+    background: none;
+  }
 }
 
 .bg-transparent-white {

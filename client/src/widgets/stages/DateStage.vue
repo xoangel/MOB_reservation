@@ -15,7 +15,7 @@ const { stagesDataStored } = storeToRefs(appStore);
         <StageTitle title="Выберите дату" :index="1" />
         <div class="flex flex-col gap-2.5">
             <DatePicker v-model="stagesDataStored[0].date" inline showWeek :showOtherMonths="false"
-                class="w-full sm:w-[30rem]" :min-date="new Date()" />
+                class="w-full sm:w-[30rem]" :min-date="new Date()" :max-date="new Date('04.01.2025')" />
             <div class="flex flex-col items-end justify-center gap-1 w-full h-20 rounded-xl">
                 <div class="flex items-center justify-between py-1 px-2 h-full w-full">
                     <p class="text-sm text-zinc-200 font-light">Выбраная дата: </p>

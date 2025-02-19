@@ -4,7 +4,7 @@ import ApiService from "@/core/ApiService";
 import { Vehicle } from '@/core/types';
 import { useAppStore } from '@/stores/app';
 import { storeToRefs } from 'pinia';
-import { getAssetPath } from '@/core/helpers';
+import { getAssetPath, calcFullCost } from '@/core/helpers';
 import type { AxiosResponse } from 'axios';
 import { Divider, Skeleton } from "primevue";
 import StageTitle from '@/ui/StageTitle.vue';
@@ -15,8 +15,6 @@ const { loading, stagesDataStored } = storeToRefs(appStore);
 const vehicles = ref<Vehicle[]>([]);
 const vehiclesDisplay = computed(() => vehicles.value.filter((el: Vehicle) => el.documentId !== seletedVehicle.value?.documentId))
 const seletedVehicle = ref<Vehicle>();
-
-let titleText: Typed;
 
 const getVehicles = async (): Promise<void> => {
     try {
@@ -52,7 +50,7 @@ const confirm = () => {
 }
 
 const initText = () => {
-    titleText = new Typed(".vehicle-title", {
+    new Typed(".vehicle-title", {
         strings: [seletedVehicle.value?.name || ''],
         typeSpeed: 50,
         showCursor: false
@@ -61,6 +59,7 @@ const initText = () => {
 
 onMounted(async () => {
     await getVehicles();
+    initText();
 })
 
 </script>
@@ -79,14 +78,14 @@ onMounted(async () => {
         <StageTitle title="Выберите транспорт" :index="3" />
         <div class="w-full">
             <div class="relative w-full aspect-video rounded-xl border border-solid border-neutral-100 overflow-hidden">
-                <img :src="getAssetPath(seletedVehicle?.photo[0]?.url)"
-                    class="h-full absolute top-1/2 left-1/2 translate-center" alt="vehicle">
-                <div class="absolute top-2 left-2">
+                <img :src="getAssetPath(seletedVehicle?.photo[0].url || '')" class="w-full absolute bottom-0 left-0"
+                    alt="vehicle">
+                <div class="gradient-underlay absolute pt-2.5 pl-4 w-full h-12 flex items-end top-0 left-0">
                     <h1 class="vehicle-title font-raleway text-4xl font-semibold"></h1>
                 </div>
             </div>
             <div class="w-full min-h-20">
-                <p class="font-raleway text-white text-sm text-left mt-1">{{ seletedVehicle?.description }}</p>
+                <p class="font-raleway text-white text-sm text-left font-medium mt-1">{{ seletedVehicle?.description }}</p>
             </div>
         </div>
         <Divider />
@@ -98,7 +97,7 @@ onMounted(async () => {
             </div>
             <div v-if="seletedVehicle?.price" class="flex items-center justify-between">
                 <p class="text-base font-raleway text-white font-medium">Стоимость</p>
-                <p class="text-base text-white font-medium">{{ seletedVehicle.price }} руб/чел</p>
+                <p class="text-base text-white font-medium">{{ calcFullCost(seletedVehicle.price) }} руб/чел</p>
             </div>
         </div>
         <h2 class="text-neutral-100 text-lg font-raleway font-medium leading-none">Доступный транспорт:</h2>
@@ -108,10 +107,9 @@ onMounted(async () => {
                 class="absolute left-0 flex justify-between w-full h-48 rounded-xl border border-solid border-neutral-100 shadow-xl"
                 @click="select(vehicle)"
                 :style="`background: linear-gradient(to bottom, #2F2F2F8a, #2F2F2F00), center / cover no-repeat url(${getAssetPath(vehicle.photo[0]?.url)}); top: ${idx * 64}px;`">
-                <!-- <div class="w-full h-full rounded-xl absolute left-0 top-0" style="background: linear-gradient(0deg, #2f2f2f32, #2f2f2f00);"></div> -->
                 <p class="text-neutral-100 font-raleway font-semibold absolute left-2 top-2 text-4xl">{{ vehicle.name }}
                 </p>
-                <p class="text-neutral-100 absolute right-2 top-2 text-2xl">{{ seletedVehicle?.price }} руб/чел</p>
+                <p class="text-neutral-100 absolute right-2 top-2 text-2xl">{{ calcFullCost(vehicle.price) }} руб/чел</p>
             </div>
         </TransitionGroup>
         <button class="flex w-full items-center justify-center gap-2 rounded-lg bg-sky-100 g-button px-4 py-2 mt-4"
@@ -122,3 +120,9 @@ onMounted(async () => {
     </div>
 
 </template>
+
+<style scoped lang="scss">
+.gradient-underlay {
+    background: linear-gradient(180deg, #2F2F2F8a 0%, transparent 100%);
+}
+</style>

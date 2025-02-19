@@ -22,6 +22,8 @@ export const useAppStore = defineStore("appStore", () => {
     {
       tripId: ref(null),
       tripName: ref(""),
+      tripPhoto: ref(""),
+      map: ref("")
     },
     {
       transportId: ref(null),

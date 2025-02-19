@@ -4,6 +4,7 @@
         <div
             v-if="visible"
             class="drawer_overlay w-full h-full absolute left-0 top-0 bottom-0"
+            :class="{'enabled' : visible}"
             @click="close"
         />
       </Transition>
@@ -76,14 +77,21 @@
   };
   
   const open = () => {
+    offsetY.value = 400;
     visible.value = true;
     emit('opened');
+    setTimeout(()=>{
+      offsetY.value = 0;
+    }, 100)
   }
   
   const close = () => {
-    visible.value = false;
-    offsetY.value = 0;
-    emit('closed');
+    offsetY.value = 400;
+    setTimeout(()=>{
+      visible.value = false;
+      emit('closed');
+      offsetY.value = 0;
+    }, 200)
   }
   
   const handleTouchStart = (event: TouchEvent) => {
@@ -142,15 +150,15 @@
       z-index: 9998;
     }
     .drawer_template{
-      position: absolute;
+      position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      background: white;
+      @apply bg-sky-900;
       border-radius: 15px 15px 0 0;
       z-index: 9998;
   
-      //transition: transform .3s ease-out, opacity 0.35s ease;
+      transition: transform .3s ease-out, opacity 0.35s ease;
   
       &__wrapper{
         overflow-y: auto;

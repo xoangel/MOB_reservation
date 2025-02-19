@@ -86,12 +86,18 @@ onMounted(async () => {
 
     watch(activeStage, (value) => {
         if (value === 4) animation.play();
+    }, {
+        immediate: true
     })
 })
 </script>
 
 <template>
-    <div class="w-full h-24">
+    <div 
+        class="w-full h-24"
+        :class="{'!h-12': completed}"
+        style="transition: all .5s ease;"
+    >
         <Transition name="fade" mode="out-in">
             <div v-if="!completed" class="flex items-center justify-center gap-1 w-full m-auto mt-6 mb-10">
                 <div v-for="(stage, idx) in stages" :key="idx" class="flex items-center gap-1"
@@ -114,7 +120,9 @@ onMounted(async () => {
                     </div>
                 </div>
             </div>
-            <h3 v-else>Готово</h3>
+            <div v-else class=" w-full h-10 rounded-t-xl bg-green-400 mt-6 mb-10 flex items-center justify-center">
+                <h1 class="text-base font-raleway font-bold text-cyan-50">Бронирование завершено!</h1>
+            </div>
         </Transition>
     </div>
 

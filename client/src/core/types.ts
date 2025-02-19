@@ -8,9 +8,9 @@ export interface Trip {
     title: string; // Заголовок документа
     map: string,
     updatedAt: string; // Дата последнего обновления (ISO строка)
-    photo: {
+    photo: Array<{
       url: string,
-    }
+    }>
   }
 
   export interface Vehicle {
